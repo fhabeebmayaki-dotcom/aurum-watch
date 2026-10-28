@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AURUM — MAISON AURUM · GENÈVE</title>
+<meta name="description" content="Maison Aurum, Genève. The Sovereign Calibre 1887, hand-finished in eighteen-karat gold.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --black:#0a0a0a;
+    --black-2:#111111;
+    --gold:#c9a227;
+    --gold-light:#e3c766;
+    --gold-dark:#8a6d1a;
+    --white:#f5f2ea;
+    --grey:#9a958a;
+    --grey-dark:#6b675e;
+    --serif:"Cormorant Garamond", Georgia, "Times New Roman", serif;
+    --sans:"Inter", Helvetica, Arial, sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--black);color:var(--white);font-family:var(--sans);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  .eyebrow{font-family:var(--sans);font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--gold);font-weight:500}
+  /* Nav */
+  nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;justify-content:space-between;align-items:center;padding:26px 56px;background:rgba(10,10,10,.82);backdrop-filter:blur(8px)}
+  .logo{font-family:var(--serif);font-size:26px;letter-spacing:.28em;font-weight:600}
+  .logo span{color:var(--gold)}
+  .nav-links{display:flex;gap:38px;list-style:none;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--grey)}
+  .nav-links a{transition:color .3s}
+  .nav-links a:hover{color:var(--gold-light)}
+  /* Hero */
+  .hero{min-height:100vh;display:grid;grid-template-columns:1.05fr .95fr;align-items:center;gap:24px;padding:130px 56px 60px;position:relative}
+  .hero-copy{max-width:620px}
+  .hero-copy .eyebrow{display:block;margin-bottom:28px}
+  h1{font-family:var(--serif);font-weight:500;font-size:clamp(64px,9vw,128px);line-height:.92;letter-spacing:-.01em}
+  h1 .gold{font-style:italic;color:var(--gold);font-weight:500}
+  .subhead{margin-top:32px;max-width:460px;color:var(--grey);font-size:16px;line-height:1.75;font-weight:400}
+  .btn{display:inline-block;margin-top:40px;padding:15px 38px;border:1px solid var(--gold);color:var(--white);font-size:11px;letter-spacing:.28em;text-transform:uppercase;transition:background .3s,color .3s}
+  .btn:hover{background:var(--gold);color:#0a0a0a}
+  .hero-watch{position:relative;display:flex;justify-content:center;align-items:center;min-height:520px;perspective:900px}
+  .watch-wrap{will-change:transform}
+  /* Note: float motion is applied in JS (see frame loop) so it does not
+     override the parallax/tilt transform, as a CSS animation would. */
+  .hero-watch svg{width:min(460px,82vw);height:auto;filter:drop-shadow(0 30px 50px rgba(0,0,0,.65))}
+  .scroll-hint{position:absolute;left:56px;bottom:32px;font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--grey-dark)}
+  /* Reveal */
+  .reveal{opacity:0;transform:translateY(28px);transition:opacity .9s ease,transform .9s ease}
+  .reveal.visible{opacity:1;transform:translateY(0)}
+  /* Movement */
+  .movement{background:var(--black-2);padding:110px 56px;display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
+  .movement .eyebrow{display:block;margin-bottom:22px}
+  .movement h2{font-family:var(--serif);font-weight:500;font-size:clamp(42px,4.6vw,68px);line-height:1.05}
+  .movement p{margin-top:22px;color:var(--grey);line-height:1.75;max-width:480px;font-size:15px}
+  .specs{margin-top:44px;display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#2a2721;border:1px solid #2a2721}
+  .spec{background:var(--black-2);padding:28px 24px}
+  .spec b{display:block;font-family:var(--serif);font-weight:600;font-size:34px;color:var(--white);letter-spacing:.01em}
+  .spec b span{color:var(--gold);font-size:20px;vertical-align:top}
+  .spec small{display:block;margin-top:8px;font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:var(--grey)}
+  .movement-watch{display:flex;justify-content:center}
+  .movement-watch svg{width:min(380px,80vw);height:auto}
+  .detail-note{margin-top:18px;text-align:center;font-size:10px;letter-spacing:.26em;text-transform:uppercase;color:var(--grey-dark)}
+  footer{padding:36px 56px;border-top:1px solid #22201a;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--grey-dark)}
+  @media (max-width:900px){
+    nav{padding:20px 24px}
+    .nav-links{display:none}
+    .hero{grid-template-columns:1fr;padding:110px 24px 70px;text-align:left}
+    .hero-watch{min-height:380px;order:2}
+    .scroll-hint{left:24px}
+    .movement{grid-template-columns:1fr;padding:80px 24px;gap:48px}
+    .movement-watch{order:-1}
+    footer{padding:28px 24px}
+  }
+  @media (max-width:560px){
+    .specs{grid-template-columns:1fr}
+    .hero-watch{min-height:320px}
+  }
+</style>
+</head>
+<body>
+<nav>
+  <a class="logo" href="#top">AURUM</a>
+  <ul class="nav-links">
+    <li><a href="#collection">COLLECTION</a></li>
+    <li><a href="#atelier">ATELIER</a></li>
+    <li><a href="#heritage">HERITAGE</a></li>
+    <li><a href="#boutiques">BOUTIQUES</a></li>
+  </ul>
+</nav>
+
+<header class="hero" id="top">
+  <div class="hero-copy">
+    <span class="eyebrow reveal">MAISON AURUM · GENÈVE</span>
+    <h1 class="reveal">Time,<br><span class="gold">gilded.</span></h1>
+    <p class="subhead reveal">The Sovereign Calibre 1887, hand-finished in eighteen-karat gold, assembled by a single master over four hundred hours.</p>
+    <a class="btn reveal" href="#movement">DISCOVER</a>
+  </div>
+
+  <div class="hero-watch" id="watchStage">
+    <div class="watch-wrap" id="watchWrap">
+      <!-- Original SVG illustration: gold watch, link bracelet, brown/gold dial -->
+      <svg viewBox="0 0 400 560" role="img" aria-label="Gold Aurum watch with link bracelet and brown dial" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <circle id="caseRing" cx="200" cy="290" r="132" fill="none"/>
+        </defs>
+        <!-- Bracelet: upper links -->
+        <g fill="#c9a227" stroke="#8a6d1a" stroke-width="1">
+          <rect x="168" y="18" width="64" height="42" rx="8"/>
+          <rect x="168" y="66" width="64" height="42" rx="8" fill="#b9971f"/>
+          <rect x="168" y="114" width="64" height="42" rx="8"/>
+          <rect x="168" y="162" width="64" height="34" rx="8" fill="#b9971f"/>
+        </g>
+        <!-- Bracelet: lower links -->
+        <g fill="#c9a227" stroke="#8a6d1a" stroke-width="1">
+          <rect x="168" y="392" width="64" height="34" rx="8" fill="#b9971f"/>
+          <rect x="168" y="432" width="64" height="42" rx="8"/>
+          <rect x="168" y="480" width="64" height="42" rx="8" fill="#b9971f"/>
+          <rect x="168" y="528" width="64" height="22" rx="8"/>
+        </g>
+        <!-- Crown -->
+        <rect x="338" y="278" width="16" height="24" rx="4" fill="#c9a227" stroke="#8a6d1a"/>
+        <!-- Case -->
+        <circle cx="200" cy="290" r="138" fill="#c9a227" stroke="#8a6d1a" stroke-width="2"/>
+        <circle cx="200" cy="290" r="124" fill="#e3c766" stroke="#8a6d1a" stroke-width="1"/>
+        <circle cx="200" cy="290" r="112" fill="#3a2415"/>
+        <circle cx="200" cy="290" r="112" fill="none" stroke="#c9a227" stroke-width="1.5"/>
+        <!-- Dial markers -->
+        <g stroke="#e3c766" stroke-width="3" stroke-linecap="round">
+          <line x1="200" y1="190" x2="200" y2="206"/>
+          <line x1="200" y1="374" x2="200" y2="390"/>
+          <line x1="100" y1="290" x2="116" y2="290"/>
+          <line x1="284" y1="290" x2="300" y2="290"/>
+        </g>
+        <g fill="#e3c766">
+          <circle cx="248" cy="208" r="4"/><circle cx="292" cy="242" r="4"/><circle cx="292" cy="338" r="4"/>
+          <circle cx="248" cy="372" r="4"/><circle cx="152" cy="372" r="4"/><circle cx="108" cy="338" r="4"/>
+          <circle cx="108" cy="242" r="4"/><circle cx="152" cy="208" r="4"/>
+        </g>
+        <!-- Brand + subdial -->
+        <text x="200" y="248" text-anchor="middle" font-family="Georgia, serif" font-size="20" letter-spacing="4" fill="#e3c766">AURUM</text>
+        <text x="200" y="266" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" letter-spacing="2" fill="#c9a227">GENÈVE</text>
+        <circle cx="200" cy="330" r="20" fill="none" stroke="#c9a227" stroke-width="1"/>
+        <text x="200" y="334" text-anchor="middle" font-family="Georgia, serif" font-size="11" fill="#e3c766">1887</text>
+        <!-- Hands: 10:09 -->
+        <line x1="200" y1="290" x2="158" y2="248" stroke="#e3c766" stroke-width="5" stroke-linecap="round"/>
+        <line x1="200" y1="290" x2="244" y2="228" stroke="#f5f2ea" stroke-width="4" stroke-linecap="round"/>
+        <circle cx="200" cy="290" r="7" fill="#c9a227" stroke="#8a6d1a"/>
+        <!-- Bezel numerals -->
+        <text x="200" y="196" text-anchor="middle" font-family="Georgia, serif" font-size="14" fill="#e3c766">12</text>
+        <text x="200" y="392" text-anchor="middle" font-family="Georgia, serif" font-size="14" fill="#e3c766">6</text>
+      </svg>
+    </div>
+  </div>
+  <span class="scroll-hint">Scroll</span>
+</header>
+
+<section class="movement" id="movement">
+  <div>
+    <span class="eyebrow reveal">THE MOVEMENT</span>
+    <h2 class="reveal">A heart of 312 parts</h2>
+    <p class="reveal">Every component of the Sovereign Calibre 1887 is finished by hand and assembled by a single master. Nothing is rushed. Nothing is left to chance.</p>
+    <div class="specs reveal">
+      <div class="spec"><b>72<span>h</span></b><small>POWER RESERVE</small></div>
+      <div class="spec"><b>28,800</b><small>VIBRATIONS / HR</small></div>
+      <div class="spec"><b>31</b><small>JEWELS</small></div>
+      <div class="spec"><b>50<span>m</span></b><small>WATER RESISTANCE</small></div>
+    </div>
+  </div>
+  <div class="movement-watch reveal">
+    <div>
+      <!-- Dial detail: same watch, cropped viewBox on the dial -->
+      <svg viewBox="70 160 260 260" role="img" aria-label="Detail of the Aurum watch dial" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="200" cy="290" r="138" fill="#c9a227" stroke="#8a6d1a" stroke-width="2"/>
+        <circle cx="200" cy="290" r="124" fill="#e3c766" stroke="#8a6d1a" stroke-width="1"/>
+        <circle cx="200" cy="290" r="112" fill="#3a2415"/>
+        <circle cx="200" cy="290" r="112" fill="none" stroke="#c9a227" stroke-width="1.5"/>
+        <g stroke="#e3c766" stroke-width="3" stroke-linecap="round">
+          <line x1="200" y1="190" x2="200" y2="206"/><line x1="200" y1="374" x2="200" y2="390"/>
+          <line x1="100" y1="290" x2="116" y2="290"/><line x1="284" y1="290" x2="300" y2="290"/>
+        </g>
+        <text x="200" y="248" text-anchor="middle" font-family="Georgia, serif" font-size="20" letter-spacing="4" fill="#e3c766">AURUM</text>
+        <text x="200" y="266" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" letter-spacing="2" fill="#c9a227">GENÈVE</text>
+        <circle cx="200" cy="330" r="20" fill="none" stroke="#c9a227" stroke-width="1"/>
+        <text x="200" y="334" text-anchor="middle" font-family="Georgia, serif" font-size="11" fill="#e3c766">1887</text>
+        <line x1="200" y1="290" x2="158" y2="248" stroke="#e3c766" stroke-width="5" stroke-linecap="round"/>
+        <line x1="200" y1="290" x2="244" y2="228" stroke="#f5f2ea" stroke-width="4" stroke-linecap="round"/>
+        <circle cx="200" cy="290" r="7" fill="#c9a227" stroke="#8a6d1a"/>
+      </svg>
+      <p class="detail-note">Calibre 1887 · Detail</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>MAISON AURUM · GENÈVE</span>
+  <span>Time, gilded.</span>
+</footer>
+
+<script>
+(function () {
+  // Fade / slide-in on scroll
+  var observer = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) { entry.target.classList.add('visible'); observer.unobserve(entry.target); }
+    });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.reveal').forEach(function (el) { observer.observe(el); });
+
+  // Hero watch: scroll parallax + gentle mouse tilt
+  var stage = document.getElementById('watchStage');
+  var wrap = document.getElementById('watchWrap');
+  var tiltX = 0, tiltY = 0, targetX = 0, targetY = 0;
+  if (stage && wrap) {
+    stage.addEventListener('mousemove', function (e) {
+      var r = stage.getBoundingClientRect();
+      targetY = ((e.clientX - r.left) / r.width - 0.5) * 10;
+      targetX = -((e.clientY - r.top) / r.height - 0.5) * 10;
+    });
+    stage.addEventListener('mouseleave', function () { targetX = 0; targetY = 0; });
+    function frame() {
+      tiltX += (targetX - tiltX) * 0.06;
+      tiltY += (targetY - tiltY) * 0.06;
+      var scrollShift = Math.min(window.scrollY * 0.06, 60);
+      var floatY = Math.sin(performance.now() / 1100) * 8;
+      wrap.style.transform = 'translateY(' + (floatY - scrollShift) + 'px) rotateX(' + tiltX.toFixed(2) + 'deg) rotateY(' + tiltY.toFixed(2) + 'deg)';
+      requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  }
+})();
+</script>
+</body>
+</html>
